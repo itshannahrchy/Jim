@@ -108,7 +108,17 @@ function textOf(content: Anthropic.ContentBlock[]): string {
     .trim();
 }
 
+// Plain logs ("ate 2 eggs") get a quick, light pass; questions and coaching
+// requests get deeper thinking so the advice is genuinely expert.
+const COACHING_HINTS =
+  /\?|\b(should|how|why|what|which|can't|cannot|can i|stuck|struggl|plateau|plan|advice|help|tips?|improv\w*|progress\w*|aren.t|isn.t|won.t|not getting|still|suggest|recommend|sore|pain|hurt|injur|tired|motivat|behind|missed|skipped|rest of the week|next week|tomorrow|drill|technique|what to eat|ideas?)\b/i;
+
+function effortFor(message: string): "low" | "high" {
+  return COACHING_HINTS.test(message) ? "high" : "low";
+}
+
 export async function chatWithMorris(userMessage: string, tz: string) {
+  const effort = effortFor(userMessage);
   const messages = await history();
   const system: Anthropic.TextBlockParam[] = [
     { type: "text", text: MORRIS_SYSTEM, cache_control: { type: "ephemeral" } },
@@ -122,11 +132,11 @@ export async function chatWithMorris(userMessage: string, tz: string) {
   for (let round = 0; round < MAX_TOOL_ROUNDS; round++) {
     const res = await client().messages.create({
       model: MODEL,
-      max_tokens: 4096,
+      max_tokens: effort === "high" ? 12000 : 4096,
       system,
       tools: TOOLS,
       messages,
-      output_config: { effort: "low" },
+      output_config: { effort },
     });
 
     const text = textOf(res.content);
