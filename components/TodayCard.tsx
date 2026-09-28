@@ -26,6 +26,15 @@ export type Today = {
   food: FoodEntry[];
   goal: { id: number; title: string; target_date: string | null } | null;
   microGoal: { id: number; title: string; current: number; target: number; mode: "value" | "ladder"; unit: string | null } | null;
+  microGoals?: {
+    id: number;
+    title: string;
+    status: "not_started" | "in_progress" | "achieved";
+    current: number | null;
+    target: number | null;
+    unit: string | null;
+    isCurrent: boolean;
+  }[];
   calories: { eaten: number; burned: number; target: number | null };
 };
 
@@ -102,24 +111,103 @@ export default function TodayCard({
             </button>
           </div>
 
-          <div className="micro">
-            <div className="micro-row">
-              <span>{mg ? `Micro-goal: ${mg.title}` : "Micro-goal: Morris will suggest some"}</span>
-              {mg && <span>{mg.mode === "value" ? `${mg.current} of ${mg.target}` : `Step ${mg.current + 1} of ${mg.target}`}</span>}
-            </div>
-            <div
-              className="bar"
-              role="progressbar"
-              aria-valuemin={0}
-              aria-valuemax={100}
-              aria-valuenow={Math.round(pct)}
-              aria-label="Micro-goal progress"
-            >
-              <div className="bar-fill" style={{ width: `${pct}%` }} />
-            </div>
-          </div>
+          <MicroGoals today={today} pct={pct} />
         </div>
       )}
     </section>
+  );
+}
+
+function StatusIcon({ status }: { status: "not_started" | "in_progress" | "achieved" }) {
+  if (status === "achieved") {
+    return (
+      <svg className="mg-icon" viewBox="0 0 22 22" aria-hidden>
+        <circle cx="11" cy="11" r="9.5" fill="#8B6CF0" stroke="#1F1B16" strokeWidth="1.5" />
+        <path d="M6.5 11.3l3 3 6-6.3" stroke="#fff" strokeWidth="2.4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    );
+  }
+  if (status === "in_progress") {
+    return (
+      <svg className="mg-icon" viewBox="0 0 22 22" aria-hidden>
+        <circle cx="11" cy="11" r="9.5" fill="#fff" stroke="#8B6CF0" strokeWidth="2.5" />
+        <circle cx="11" cy="11" r="4" fill="#8B6CF0" />
+      </svg>
+    );
+  }
+  return (
+    <svg className="mg-icon" viewBox="0 0 22 22" aria-hidden>
+      <circle cx="11" cy="11" r="9.5" fill="#fff" stroke="#1F1B16" strokeWidth="1.5" />
+    </svg>
+  );
+}
+
+function MicroGoals({ today, pct }: { today: Today; pct: number }) {
+  const list = today.microGoals ?? [];
+  const mg = today.microGoal;
+  const done = list.filter((m) => m.status === "achieved").length;
+  const by = today.goal?.target_date
+    ? new Date(`${today.goal.target_date}T12:00:00Z`).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" })
+    : null;
+
+  if (!today.goal && !list.length) {
+    return (
+      <div className="micro">
+        <p className="mg-empty">Micro-goals: Morris will suggest some once you tell him your big goal.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="micro">
+      {today.goal && (
+        <div className="mg-goal">
+          <span className="mg-goal-label">Goal</span>
+          <span className="mg-goal-title">{today.goal.title}</span>
+          {by && <span className="mg-goal-by">by {by}</span>}
+        </div>
+      )}
+      {list.length > 0 ? (
+        <>
+          <div className="mg-head">
+            <span>Micro-goals</span>
+            <span>
+              {done} of {list.length} done
+            </span>
+          </div>
+          <ol className="mg-list">
+            {list.map((m) => (
+              <li key={m.id} className={`mg-item ${m.status}${m.isCurrent ? " current" : ""}`}>
+                <StatusIcon status={m.isCurrent && m.status === "not_started" ? "in_progress" : m.status} />
+                <div className="mg-body">
+                  <div className="mg-row">
+                    <span className="mg-title">{m.title}</span>
+                    {m.isCurrent && mg?.mode === "value" && (
+                      <span className="mg-count">
+                        {mg.current} of {mg.target}
+                      </span>
+                    )}
+                  </div>
+                  {m.isCurrent && mg?.mode === "value" && (
+                    <div
+                      className="bar"
+                      role="progressbar"
+                      aria-valuemin={0}
+                      aria-valuemax={100}
+                      aria-valuenow={Math.round(pct)}
+                      aria-label={`Progress on ${m.title}`}
+                    >
+                      <div className="bar-fill" style={{ width: `${pct}%` }} />
+                    </div>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ol>
+        </>
+      ) : (
+        <p className="mg-empty">No micro-goals yet. Ask Morris to suggest some.</p>
+      )}
+    </div>
   );
 }

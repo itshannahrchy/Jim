@@ -309,6 +309,15 @@ export async function todaySummary(tz: string) {
     food: logs.food,
     goal: goal ? { id: goal.id, title: goal.title, target_date: goal.target_date } : null,
     microGoal,
+    microGoals: micro.map((m) => ({
+      id: m.id,
+      title: m.title,
+      status: m.status as "not_started" | "in_progress" | "achieved",
+      current: m.current_value,
+      target: m.target_value,
+      unit: m.unit,
+      isCurrent: m.id === cur?.id,
+    })),
     calories: {
       eaten: sum(logs.food.map((f) => f.estimated_calories)),
       burned: sum(logs.workouts.map((w) => w.estimated_calories)),
