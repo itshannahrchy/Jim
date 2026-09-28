@@ -1,0 +1,22 @@
+# dependencies
+node_modules/
+
+# next.js build output
+.next/
+out/
+
+# secrets — never commit these
+.env
+.env.local
+.env.*.local
+
+# vercel
+.vercel/
+
+# misc
+*.tsbuildinfo
+.DS_Store
+npm-debug.log*
+
+# design references (not part of the app)
+ui-reference-*.png
