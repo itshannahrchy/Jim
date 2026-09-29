@@ -13,9 +13,10 @@
   --coral: #e5533a;
   --mint: #7ddbc8;
   --pill: #14110e;
-  --line: 1.5px solid var(--ink);
+  --line: 1px solid var(--ink);
   --font-heading: "Bricolage Grotesque", system-ui, sans-serif;
   --font-body: "DM Sans", system-ui, sans-serif;
+  --font-chat: "Roboto", system-ui, sans-serif;
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
@@ -244,42 +245,45 @@ h3 {
   display: flex;
   align-items: center;
   gap: 12px;
-  min-height: 64px;
+  min-height: 56px;
 }
 .header-avatar {
-  width: 56px;
+  width: 46px;
   margin-top: 4px;
 }
 .header h1 {
-  font-size: 2.35rem;
+  font-size: 1.65rem;
   font-weight: 700;
   letter-spacing: -0.02em;
   flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .day-pill {
   position: relative;
   border: var(--line);
   border-radius: 999px;
-  padding: 6px 16px;
+  padding: 5px 13px;
   font-weight: 500;
-  font-size: 1.05rem;
+  font-size: 0.88rem;
   color: var(--ink-soft);
   background: transparent;
 }
 
 .today {
   position: relative;
-  margin-top: 26px;
+  margin-top: 22px;
   background: var(--card);
   border: var(--line);
-  border-radius: 28px;
-  padding: 16px 18px 18px;
+  border-radius: 22px;
+  padding: 10px 14px 14px;
 }
 .today-peek {
   position: absolute;
-  width: 58px;
+  width: 50px;
   right: 22%;
-  top: -40px;
+  top: -34px;
   pointer-events: none;
 }
 .today-head {
@@ -294,7 +298,7 @@ h3 {
   text-align: left;
 }
 .today-head h2 {
-  font-size: 1.45rem;
+  font-size: 1.15rem;
   font-weight: 600;
 }
 .chevron {
@@ -308,20 +312,20 @@ h3 {
   transform: rotate(180deg);
 }
 .today-body {
-  margin-top: 10px;
+  margin-top: 4px;
 }
 .tiles {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 8px;
   align-items: stretch;
 }
 .tile {
   text-align: left;
   border: var(--line);
-  border-radius: 20px;
-  padding: 12px 14px;
-  min-height: 104px;
+  border-radius: 16px;
+  padding: 10px 12px;
+  min-height: 86px;
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -334,7 +338,7 @@ h3 {
   background: var(--food);
 }
 .tile-label {
-  font-size: 0.82rem;
+  font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -347,9 +351,9 @@ h3 {
 }
 .tile-title {
   font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 1.28rem;
-  line-height: 1.15;
+  font-weight: 600;
+  font-size: 1.05rem;
+  line-height: 1.2;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -357,7 +361,7 @@ h3 {
 }
 .tile-sub {
   color: var(--ink-soft);
-  font-size: 0.95rem;
+  font-size: 0.82rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -365,28 +369,28 @@ h3 {
 .tile-foot {
   margin-top: auto;
   padding-top: 4px;
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 0.72rem;
+  font-weight: 500;
   color: var(--ink-soft);
 }
 .tile-empty {
   color: var(--ink-soft);
-  font-size: 0.95rem;
+  font-size: 0.82rem;
   line-height: 1.35;
   margin-top: 4px;
 }
 .micro {
-  margin-top: 16px;
+  margin-top: 12px;
 }
 .mg-goal {
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
   gap: 4px 8px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 .mg-goal-label {
-  font-size: 0.78rem;
+  font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -394,17 +398,17 @@ h3 {
 }
 .mg-goal-title {
   font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 1.08rem;
+  font-weight: 600;
+  font-size: 0.95rem;
 }
 .mg-goal-by {
   color: var(--ink-soft);
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 }
 .mg-head {
   display: flex;
   justify-content: space-between;
-  font-size: 0.82rem;
+  font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -419,24 +423,24 @@ h3 {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
 }
 .mg-item {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  padding: 5px 0;
+  gap: 9px;
+  padding: 4px 0;
 }
 .mg-item.current {
   background: #f1ecff;
   border: var(--line);
-  border-radius: 14px;
-  padding: 8px 10px;
+  border-radius: 12px;
+  padding: 7px 9px;
   margin: 2px 0;
 }
 .mg-icon {
-  width: 22px;
-  height: 22px;
+  width: 17px;
+  height: 17px;
   flex: none;
   margin-top: 1px;
 }
@@ -448,7 +452,7 @@ h3 {
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  font-size: 0.98rem;
+  font-size: 0.86rem;
   line-height: 1.35;
 }
 .mg-item.achieved .mg-title {
@@ -457,7 +461,7 @@ h3 {
   text-decoration-color: rgba(31, 27, 22, 0.35);
 }
 .mg-item.current .mg-title {
-  font-weight: 600;
+  font-weight: 500;
 }
 .mg-count {
   flex: none;
@@ -465,13 +469,13 @@ h3 {
   font-weight: 500;
 }
 .mg-item .bar {
-  margin-top: 7px;
-  height: 12px;
+  margin-top: 6px;
+  height: 8px;
 }
 .mg-empty {
   margin: 0;
   color: var(--ink-soft);
-  font-size: 0.95rem;
+  font-size: 0.85rem;
 }
 .micro-row {
   display: flex;
@@ -491,7 +495,7 @@ h3 {
   font-weight: 500;
 }
 .bar {
-  height: 16px;
+  height: 10px;
   border: var(--line);
   border-radius: 999px;
   background: #f7f2e8;
@@ -509,42 +513,45 @@ h3 {
   position: relative;
   flex: 1;
   overflow-y: auto;
-  padding: 20px 20px 12px;
+  padding: 18px 20px 12px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
   -webkit-overflow-scrolling: touch;
 }
 .msg {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  align-items: flex-end;
+  gap: 8px;
   max-width: 100%;
 }
 .msg.user {
   justify-content: flex-end;
 }
 .msg-avatar {
-  width: 48px;
+  width: 36px;
   flex: none;
   align-self: flex-end;
 }
 .bubble {
   border: var(--line);
-  border-radius: 22px;
-  padding: 12px 16px;
-  font-size: 1.05rem;
+  border-radius: 18px;
+  padding: 9px 13px;
+  font-family: var(--font-chat);
+  font-size: 0.94rem;
   line-height: 1.45;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
-  max-width: calc(100% - 58px);
+  max-width: calc(100% - 44px);
 }
 .msg.assistant .bubble {
   background: var(--card);
+  border-bottom-left-radius: 6px;
 }
 .msg.user .bubble {
   background: var(--yellow);
-  max-width: 88%;
+  border-bottom-right-radius: 6px;
+  max-width: 84%;
 }
 .msg.error .bubble {
   background: #fff4f1;
@@ -556,8 +563,8 @@ h3 {
   padding: 4px 0;
 }
 .typing i {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: var(--ink-soft);
   animation: bob 1s infinite ease-in-out;
@@ -588,7 +595,8 @@ h3 {
   position: relative;
 }
 .voice-note {
-  font-size: 0.9rem;
+  font-family: var(--font-chat);
+  font-size: 0.82rem;
   color: var(--ink-soft);
   text-align: center;
   margin: 0 0 8px;
@@ -601,7 +609,7 @@ h3 {
 .composer-row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 .input-wrap {
   flex: 1;
@@ -611,16 +619,16 @@ h3 {
 .input-wrap textarea {
   display: block;
   width: 100%;
-  min-height: 58px;
-  max-height: 140px;
+  min-height: 50px;
+  max-height: 130px;
   resize: none;
   border: var(--line);
-  border-radius: 29px;
+  border-radius: 25px;
   background: var(--card);
-  font: inherit;
-  font-size: 1.05rem;
+  font-family: var(--font-chat);
+  font-size: 0.95rem;
   line-height: 1.4;
-  padding: 16px 56px 16px 22px;
+  padding: 14px 50px 14px 18px;
   color: var(--ink);
   outline: none;
 }
@@ -632,10 +640,10 @@ h3 {
 }
 .send {
   position: absolute;
-  right: 7px;
-  bottom: 7px;
-  width: 44px;
-  height: 44px;
+  right: 6px;
+  bottom: 6px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   border: none;
   background: var(--pill);
@@ -648,8 +656,8 @@ h3 {
 }
 .mic {
   flex: none;
-  width: 70px;
-  height: 70px;
+  width: 62px;
+  height: 62px;
   border-radius: 50%;
   border: 2px solid var(--ink);
   background: var(--coral);

@@ -9,6 +9,9 @@ import DaySheet from "./DaySheet";
 type Message = { id: number | string; role: "user" | "assistant" | "error"; content: string };
 
 const COLLAPSE_KEY = "jim_today_collapsed";
+const USER_NAME = "Hannah";
+// Coming back after this long away counts as reopening the app.
+const AWAY_REFRESH_MS = 5 * 60 * 1000;
 
 export async function api(path: string, init: RequestInit = {}) {
   let tz = "";
@@ -53,6 +56,7 @@ export default function Home() {
 
   const load = useCallback(async () => {
     setLoadError("");
+    setWeekday(new Date().toLocaleDateString("en-GB", { weekday: "long" }));
     try {
       const data = await api("/api/messages");
       setMessages(data.messages);
@@ -65,22 +69,26 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    setWeekday(new Date().toLocaleDateString("en-GB", { weekday: "long" }));
     try {
       setCollapsed(sessionStorage.getItem(COLLAPSE_KEY) === "1");
     } catch {
       /* ignore */
     }
+    // Opening the app always starts with a fresh, empty chat screen (the server
+    // sends no old messages). Being away for a while counts as closing it too.
     load();
-    // Refresh "today" when the app comes back to the foreground (e.g. next morning).
-    const onVisible = () => {
-      if (document.visibilityState === "visible") {
-        setWeekday(new Date().toLocaleDateString("en-GB", { weekday: "long" }));
+    let hiddenAt = 0;
+    const onVisibility = () => {
+      if (document.visibilityState === "hidden") {
+        hiddenAt = Date.now();
+      } else if (hiddenAt && Date.now() - hiddenAt >= AWAY_REFRESH_MS) {
+        load();
+      } else {
         api("/api/today").then(setToday).catch(() => {});
       }
     };
-    document.addEventListener("visibilitychange", onVisible);
-    return () => document.removeEventListener("visibilitychange", onVisible);
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => document.removeEventListener("visibilitychange", onVisibility);
   }, [load]);
 
   useEffect(() => {
@@ -109,7 +117,7 @@ export default function Home() {
   async function send() {
     const message = text.trim();
     if (!message || sending) return;
-    if (speech.listening) speech.toggle();
+    if (speech.listening) speech.cancel();
     speech.clearNotice();
     const tempId = `tmp-${Date.now()}`;
     setMessages((m) => [...m.filter((x) => x.role !== "error"), { id: tempId, role: "user", content: message }]);
@@ -151,7 +159,7 @@ export default function Home() {
 
         <header className="header">
           <Morris id="h-morris" className="header-avatar" title="Morris" />
-          <h1>Jim</h1>
+          <h1>Hi, {USER_NAME}</h1>
           <span className="day-pill">{weekday}</span>
         </header>
 

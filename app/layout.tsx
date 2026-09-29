@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Bricolage_Grotesque, DM_Sans } from "next/font/google";
+import { Bricolage_Grotesque, DM_Sans, Roboto } from "next/font/google";
 import SwRegister from "@/components/SwRegister";
 import "./globals.css";
 
@@ -13,6 +13,13 @@ const dmSans = DM_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
   variable: "--font-body",
+  display: "swap",
+});
+
+const roboto = Roboto({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-chat",
   display: "swap",
 });
 
@@ -41,7 +48,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${bricolage.variable} ${dmSans.variable}`}>
+    <html lang="en" className={`${bricolage.variable} ${dmSans.variable} ${roboto.variable}`}>
       <body>
         {children}
         <SwRegister />

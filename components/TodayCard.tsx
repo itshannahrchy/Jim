@@ -122,7 +122,7 @@ function StatusIcon({ status }: { status: "not_started" | "in_progress" | "achie
   if (status === "achieved") {
     return (
       <svg className="mg-icon" viewBox="0 0 22 22" aria-hidden>
-        <circle cx="11" cy="11" r="9.5" fill="#8B6CF0" stroke="#1F1B16" strokeWidth="1.5" />
+        <circle cx="11" cy="11" r="9.5" fill="#8B6CF0" stroke="#1F1B16" strokeWidth="1" />
         <path d="M6.5 11.3l3 3 6-6.3" stroke="#fff" strokeWidth="2.4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     );
@@ -130,14 +130,14 @@ function StatusIcon({ status }: { status: "not_started" | "in_progress" | "achie
   if (status === "in_progress") {
     return (
       <svg className="mg-icon" viewBox="0 0 22 22" aria-hidden>
-        <circle cx="11" cy="11" r="9.5" fill="#fff" stroke="#8B6CF0" strokeWidth="2.5" />
+        <circle cx="11" cy="11" r="9.5" fill="#fff" stroke="#8B6CF0" strokeWidth="1.8" />
         <circle cx="11" cy="11" r="4" fill="#8B6CF0" />
       </svg>
     );
   }
   return (
     <svg className="mg-icon" viewBox="0 0 22 22" aria-hidden>
-      <circle cx="11" cy="11" r="9.5" fill="#fff" stroke="#1F1B16" strokeWidth="1.5" />
+      <circle cx="11" cy="11" r="9.5" fill="#fff" stroke="#1F1B16" strokeWidth="1" />
     </svg>
   );
 }
