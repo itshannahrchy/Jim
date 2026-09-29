@@ -35,6 +35,9 @@ function explainAiError(e: unknown): string {
   if (e instanceof Anthropic.RateLimitError) {
     return "Morris is being asked too much at once (rate limit). Wait a minute and try again." + saved;
   }
+  if (e instanceof Anthropic.APIError && (e.status === 529 || (e.status ?? 0) >= 500)) {
+    return "Claude's servers are having a temporary problem. It's not your key or the app. Check status.claude.com and try again in a few minutes." + saved;
+  }
   if (e instanceof Anthropic.APIConnectionError) {
     return "Couldn't reach the AI service. Try again in a moment." + saved;
   }
