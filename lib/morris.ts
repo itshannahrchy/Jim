@@ -17,7 +17,11 @@ const MAX_TOOL_ROUNDS = 8;
 
 let anthropic: Anthropic | null = null;
 function client() {
-  if (!anthropic) anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY, maxRetries: 2 });
+  if (!anthropic) {
+    // Tolerate a stray space, line break or quotes pasted along with the key.
+    const apiKey = process.env.ANTHROPIC_API_KEY?.trim().replace(/^["']|["']$/g, "");
+    anthropic = new Anthropic({ apiKey, maxRetries: 2 });
+  }
   return anthropic;
 }
 
